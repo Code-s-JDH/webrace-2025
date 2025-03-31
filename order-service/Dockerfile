@@ -16,8 +16,8 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/prisma ./prisma
 
-RUN npm ci
+RUN npm ci --omit=dev
 
 EXPOSE 3200
 
-CMD node dist/src/main.js
+CMD ["npm", "run", "start:prod"]

@@ -13,7 +13,7 @@
     "paths": {
       "@/*": ["*"],
       "@common/*": ["common/*"],
-      "@auth/*": ["order/*"]
+      "@order/*": ["order/*"]
     },
     "incremental": true,
     "skipLibCheck": true,
