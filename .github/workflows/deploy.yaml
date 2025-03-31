@@ -111,12 +111,14 @@ jobs:
 
       - name: Setup env
         run: |
-          POSTGRES_URI=$(doctl databases connection get webrace-db --format URI --no-header)
-          POSTGRES_PASSWORD=$(echo $POSTGRES_URI | grep -oP 'postgres://\K.*?(?=@)')
-          echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
+          doctl databases list
+
+          # POSTGRES_URI=$(doctl databases connection get webrace-db --format URI --no-header)
+          # POSTGRES_PASSWORD=$(echo $POSTGRES_URI | grep -oP 'postgres://\K.*?(?=@)')
+          # echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
           sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
-          sed -i 's|<POSTGRES_PASSWORD>|$POSTGRES_PASSWORD|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          # sed -i 's|<POSTGRES_PASSWORD>|$POSTGRES_PASSWORD|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<VAULT_TOKEN>|"${{ secrets.VAULT_TOKEN }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
 
       - name: Deploy to DigitalOcean Kubernetes
