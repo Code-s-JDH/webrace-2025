@@ -1,0 +1,54 @@
+---
+# Vault service
+apiVersion: v1
+kind: Service
+metadata:
+  name: vault
+spec:
+  selector:
+    app: vault
+  ports:
+    - protocol: TCP
+      port: 8200
+      targetPort: 8200
+---
+# Rabbitmq service
+apiVersion: v1
+kind: Service
+metadata:
+  name: rabbitmq
+spec:
+  selector:
+    app: rabbitmq
+  ports:
+    - protocol: TCP
+      port: 5672
+      targetPort: 5672
+---
+# Redis service
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+---
+# Backend Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend 
+spec:
+  type: LoadBalancer
+  selector:
+    app: backend 
+  ports:
+    - name: backend-port
+      protocol: TCP
+      port: 80      # External port for frontend
+      targetPort: 3100  # Internal frontend service port
