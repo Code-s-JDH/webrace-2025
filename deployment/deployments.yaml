@@ -38,7 +38,7 @@ spec:
         ports:
         - containerPort: 8200
         env:
-          - name: VAULT_TOKEN
+          - name: VAULT_DEV_ROOT_TOKEN_ID
             valueFrom:
               configMapKeyRef:
                 name: deployment-config
