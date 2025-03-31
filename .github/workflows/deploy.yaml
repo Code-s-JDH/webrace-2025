@@ -103,8 +103,8 @@ jobs:
           docker build -t registry.digitalocean.com/webrace-docker-registry/notification:latest ./notification-service
           docker push registry.digitalocean.com/webrace-docker-registry/notification:latest
 
-          # docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
-          # docker push registry.digitalocean.com/webrace-docker-registry/order:latest
+          docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
+          docker push registry.digitalocean.com/webrace-docker-registry/order:latest
 
       - name: Setup env
         run: |
