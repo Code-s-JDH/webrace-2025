@@ -17,6 +17,7 @@ resource "digitalocean_database_cluster" "postgres_db" {
   node_count = 1
   tags       = [var.project_name]
 }
+
 resource "digitalocean_database_user" "db_user" {
   cluster_id = digitalocean_database_cluster.postgres_db.id
   name       = var.database_username
