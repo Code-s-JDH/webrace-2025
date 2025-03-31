@@ -13,4 +13,4 @@ COPY . /app
 
 
 # Start the application
-CMD ["npm", "migrate"]
+CMD ["npm", "run", "migrate"]
