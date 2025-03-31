@@ -37,63 +37,63 @@ spec:
     - protocol: TCP
       port: 6379
       targetPort: 6379
----
-# Auth-service LoadBalancer Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: auth
-spec:
-  type: LoadBalancer
-  selector:
-    app: auth
-  ports:
-    - name: auth-port
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
----
-# Order-service LoadBalancer Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: order
-spec:
-  type: LoadBalancer
-  selector:
-    app: order
-  ports:
-    - name: order-port
-      protocol: TCP
-      port: 3200
-      targetPort: 3200
----
-# Notification-service LoadBalancer Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: notification
-spec:
-  type: LoadBalancer
-  selector:
-    app: notification
-  ports:
-    - name: notification-port
-      protocol: TCP
-      port: 3100
-      targetPort: 3100
----
-# User-service LoadBalancer Service
-apiVersion: v1
-kind: Service
-metadata:
-  name: user
-spec:
-  type: LoadBalancer
-  selector:
-    app: user
-  ports:
-    - name: user-port
-      protocol: TCP
-      port: 3300
-      targetPort: 3300
+# ---
+# # Auth-service LoadBalancer Service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: auth
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: auth
+#   ports:
+#     - name: auth-port
+#       protocol: TCP
+#       port: 3000
+#       targetPort: 3000
+# ---
+# # Order-service LoadBalancer Service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: order
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: order
+#   ports:
+#     - name: order-port
+#       protocol: TCP
+#       port: 3200
+#       targetPort: 3200
+# ---
+# # Notification-service LoadBalancer Service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: notification
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: notification
+#   ports:
+#     - name: notification-port
+#       protocol: TCP
+#       port: 3100
+#       targetPort: 3100
+# ---
+# # User-service LoadBalancer Service
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: user
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     app: user
+#   ports:
+#     - name: user-port
+#       protocol: TCP
+#       port: 3300
+#       targetPort: 3300
