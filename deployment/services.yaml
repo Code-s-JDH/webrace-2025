@@ -37,21 +37,21 @@ spec:
     - protocol: TCP
       port: 6379
       targetPort: 6379
-# ---
-# # Auth-service LoadBalancer Service
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: auth
-# spec:
-#   type: LoadBalancer
-#   selector:
-#     app: auth
-#   ports:
-#     - name: auth-port
-#       protocol: TCP
-#       port: 3000
-#       targetPort: 3000
+---
+# Auth-service LoadBalancer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth
+spec:
+  type: LoadBalancer
+  selector:
+    app: auth
+  ports:
+    - name: auth-port
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
 # ---
 # # Order-service LoadBalancer Service
 # apiVersion: v1
