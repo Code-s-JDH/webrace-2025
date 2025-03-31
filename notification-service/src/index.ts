@@ -101,9 +101,9 @@ amqp.connect('amqp://localhost', (err, conn) => {
 
 // Example data for notifications (you may replace this with a database in production)
 interface Notification {
-    title: string;
-    body: string;
-    icon: string;
+    date: string;
+    status: string;
+    location: string;
     subscription: object;  // The subscription object from the client
 }
 
