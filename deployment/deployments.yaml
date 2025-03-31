@@ -1,0 +1,205 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: deployment-config
+data:
+    REDIS_PASSWORD: <REDIS_PASSWORD>
+    RABBITMQ_PASSWORD: <RABBITMQ_PASSWORD>
+    POSTGRES_PASSWORD: <POSTGRES_PASSWORD>
+    VAULT_TOKEN: <VAULT_TOKEN>
+---
+# Vault deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vault
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vault
+  template:
+    metadata:
+      labels:
+        app: vault
+    spec:
+      nodeSelector:
+        role: services  # Ensure this matches your node's hostname
+      containers:
+      - name: vault
+        image: vault:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 8200
+        env:
+          - name: VAULT_TOKEN
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: VAULT_TOKEN
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rabbitmq
+  template:
+    metadata:
+      labels:
+        app: rabbitmq
+    spec:
+      nodeSelector:
+        role: services  # Ensure this matches your node's hostname
+      containers:
+      - name: rabbitmq
+        image: rabbitmq:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 5672
+        env:
+          - name: RABBITMQ_DEFAULT_USER
+            value: "root"
+          - name: RABBITMQ_DEFAULT_PASS
+            valueFrom:
+              configMapKeyRef:
+                name: deployment-config
+                key: RABBITMQ_PASSWORD
+---
+# Redis deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      nodeSelector:
+        role: services  # Ensure this matches your node's hostname
+      containers:
+        - name: redis
+          image: redis:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+          - containerPort: 6379
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: REDIS_PASSWORD
+          command: ["redis-server", "--requirepass", "$(REDIS_PASSWORD)"]
+---
+# Backend deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+spec:
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      nodeSelector:
+        role: app  # Ensure this matches your node's hostname
+      containers:
+        - name: backend
+          image: registry.digitalocean.com/webrace-docker-registry/backend:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 5000
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: REDIS_PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: RABBITMQ_PASSWORD
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: POSTGRES_PASSWORD
+            - name: VAULT_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: VAULT_TOKEN
+---
+# Frontend deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      nodeSelector:
+        role: app  # Ensure this matches your node's hostname
+      containers:
+      - name: frontend
+        image: registry.digitalocean.com/webrace-docker-registry/frontend:latest
+        resources:
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 3000
+        env:
+        - name: VAULT_TOKEN
+          valueFrom:
+            configMapKeyRef:
+              name: deployment-config
+              key: VAULT_TOKEN
