@@ -20,14 +20,14 @@ async function bootstrap() {
   );
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Auth Service API')
-    .setDescription('Dokumentace API pro Auth Service')
+    .setTitle('Order Service API')
+    .setDescription('Dokumentace API pro Order Service')
     .setVersion('2.0')
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
-  const port = configService.get<number>('server.port') || 3000;
+  const port = configService.get<number>('server.port') || 3200;
   const host = configService.get<string>('server.host') || '0.0.0.0';
   await app.listen(port, host);
   console.log(`Server běží na: http://localhost:${port}`);
