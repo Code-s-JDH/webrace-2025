@@ -1,23 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AuthController } from './presentation/auth.controller';
-import { AuthService } from './app/auth.service';
-import { JwtModule } from '@nestjs/jwt';
-import { AuthRepository } from './infrastructure/auth.repository';
+import { OrderController } from './presentation/order.controller';
+import { OrderService } from './app/order.service';
+import { IOrderRepository } from './domain/order.repository';
+import { OrderRepository } from './infrastructure/order.repository';
 import { PrismaModule } from '@/common/infrastructure/prisma/prisma.module';
 
 @Module({
-  imports: [
-    PrismaModule,
-    JwtModule.register({
-      secret: 'SECRET_KEY',
-      signOptions: { expiresIn: '1h' },
-    }),
-  ],
-  controllers: [AuthController],
+  imports: [PrismaModule],
+  controllers: [OrderController],
   providers: [
-    AuthService,
-    { provide: 'IAuthRepository', useClass: AuthRepository },
+    OrderService,
+    { provide: 'IOrderRepository', useClass: OrderRepository },
   ],
-  exports: [AuthService],
+  exports: [OrderService],
 })
-export class AuthModule {}
+export class OrderModule {}
