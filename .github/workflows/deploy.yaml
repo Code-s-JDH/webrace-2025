@@ -116,7 +116,8 @@ jobs:
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<POSTGRES_URI>|"${{ secrets.POSTGRES_URI }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<VAULT_TOKEN>|"${{ secrets.VAULT_TOKEN }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
-          
+          sed -i 's|<DATABASE_URL>|"${{ secrets.POSTGRES_URI }}"|' $GITHUB_WORKSPACE/migrations/.env
+
       - name: Migrate
         run: |
             npm install
