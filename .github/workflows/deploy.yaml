@@ -1,0 +1,127 @@
+name: Terraform Deployment
+
+on: 
+  push:
+     branches:
+      - master
+
+jobs:
+  terraform:
+    name: Terraform Apply
+    runs-on: ubuntu-latest
+
+    # Steps
+      # 1. Checkout the code
+      # 2. Terraform Setup
+      # 2. Terraform Setup .auth.tfvars
+      # 4. Terraform Init
+      # 5. Terraform Validate
+      # 6. Terraform Plan
+      # 7. Terraform Apply
+    steps:
+      - name: Checkout code 
+        uses: actions/checkout@v4
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.3
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
+
+      - name: Terraform Setup .auth.tfvars
+        run: |
+          echo "do_token = \"${{ secrets.DO_TOKEN }}\"" > terraform/terraform.auto.tfvars
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
+        env:
+          TF_VAR_do_token: ${{ secrets.DO_TOKEN }}
+          TF_VAT_database_password: ${{ secrets.POSTGRES_PASSWORD }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: terraform
+
+      - name: Terraform Plan
+        run: terraform plan 
+        working-directory: terraform
+     
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: terraform
+
+  deploy:
+    name: Deploy on kubernetes
+    runs-on: ubuntu-latest
+    needs: terraform
+
+    # Steps
+      # 1. Checkout code
+      # 2. Install DigitalOcean CLI (doctl)
+      # 3. Save Kubernetes kubeconfig
+      # 4. Verify Kubernetes connection and setup Node labels
+      # 5. Remove existing resources in namespace
+      # 6. Authenticate with DigitalOcean Container Registry
+      # 7. Build and push Docker images to registry
+      # 8. Configure environment variables
+      # 9. Deploy to DigitalOcean Kubernetes
+    steps:
+      - name: Checkout code 
+        uses: actions/checkout@v4
+
+      - name: Should be tests here
+        run: echo "Tests should be here"
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DO_TOKEN }}
+          
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.3
+          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
+
+      - name: Terraform Setup .auth.tfvars
+        run: |
+          echo "do_token = \"${{ secrets.DO_TOKEN }}\"" > terraform/terraform.auto.tfvars
+      
+      - name: Save DigitalOcean Kubernetes kubeconfig
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 web-race-k8s-cluster
+      
+      - name: Verify Kubernetes Connection and setup Node labels
+        run: |
+          Nodes=($(kubectl get nodes -o jsonpath='{.items[*].metadata.name}'))
+          kubectl label node "${Nodes[0]}" role=services --overwrite
+          kubectl label node "${Nodes[1]}" role=app --overwrite
+
+
+      - name: Delete all existing resources in the namespace
+        run: |
+          kubectl delete all --all --ignore-not-found=true
+          kubectl delete pvc --all --ignore-not-found=true
+
+      - name: Log in to DigitalOcean Container Registry
+        run: doctl registry login --expiry-seconds 1200
+
+      - name: Build and push Docker images
+        run: |
+          docker build -t registry.digitalocean.com/webrace-docker-registry/frontend:latest ./frontend
+          docker push registry.digitalocean.com/webrace-docker-registry/frontend:latest
+          docker build -t registry.digitalocean.com/webrace-docker-registry/backend:latest ./backend
+          docker push registry.digitalocean.com/webrace-docker-registry/backend:latest
+
+      - name: Setup env
+        run: |
+          POSTGRES_PASSWORD=$(terraform output -raw db_user_password)
+          sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          sed -i 's|<POSTGRES_PASSWORD>|$POSTGRES_PASSWORD|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          sed -i 's|<VAULT_TOKEN>|"${{ secrets.VAULT_TOKEN }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+
+      - name: Deploy to DigitalOcean Kubernetes
+        run: |
+          kubectl apply -f $GITHUB_WORKSPACE/deployment/deployments.yaml
+          kubectl apply -f $GITHUB_WORKSPACE/deployment/services.yaml
