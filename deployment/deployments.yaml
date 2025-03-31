@@ -167,6 +167,41 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: VAULT_TOKEN
+---
+# Notification-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification
+spec:
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      nodeSelector:
+        role: app  # Ensure this matches your node's hostname
+      containers:
+        - name: notification
+          image: registry.digitalocean.com/webrace-docker-registry/notification:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 3100
+          env:
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: RABBITMQ_PASSWORD
 # ---
 # # Order-service deployment
 # apiVersion: apps/v1
@@ -196,56 +231,6 @@ spec:
 #               cpu: "250m"
 #           ports:
 #             - containerPort: 3200
-#           env:
-#             - name: REDIS_PASSWORD
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: REDIS_PASSWORD
-#             - name: RABBITMQ_PASSWORD
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: RABBITMQ_PASSWORD
-#             - name: POSTGRES_URI
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: POSTGRES_URI
-#             - name: VAULT_TOKEN
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: VAULT_TOKEN
-# ---
-# # Notification-service deployment
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: notification
-# spec:
-#   selector:
-#     matchLabels:
-#       app: notification
-#   template:
-#     metadata:
-#       labels:
-#         app: notification
-#     spec:
-#       nodeSelector:
-#         role: app  # Ensure this matches your node's hostname
-#       containers:
-#         - name: notification
-#           image: registry.digitalocean.com/webrace-docker-registry/notification:latest
-#           resources:
-#             limits:
-#               memory: "512Mi"
-#               cpu: "500m"
-#             requests:
-#               memory: "256Mi"
-#               cpu: "250m"
-#           ports:
-#             - containerPort: 3100
 #           env:
 #             - name: REDIS_PASSWORD
 #               valueFrom:
