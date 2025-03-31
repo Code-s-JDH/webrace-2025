@@ -82,6 +82,11 @@ output "database_uri" {
   sensitive = true
 }
 
+output "db_user_password" {
+  value     = digitalocean_database_user.db_user.password
+  sensitive = true
+}
+
 output "kubeconfig" {
   value     = digitalocean_kubernetes_cluster.my_cluster.kube_config[0].raw_config
   sensitive = true
@@ -89,8 +94,4 @@ output "kubeconfig" {
 
 output "registry_endpoint" {
   value = digitalocean_container_registry.my_registry.server_url
-}
-output "db_user_password" {
-  value     = digitalocean_database_user.db_user.password
-  sensitive = true
 }
