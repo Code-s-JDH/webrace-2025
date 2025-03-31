@@ -1,4 +1,3 @@
-// src/health/health.service.ts
 import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from '@/common/infrastructure/prisma/prisma.service';
 import { RabbitMQService } from '@/common/infrastructure/rabbitmq/rabbitmq.service';

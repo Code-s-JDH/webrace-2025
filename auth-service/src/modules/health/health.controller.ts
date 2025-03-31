@@ -11,8 +11,8 @@ export class HealthController {
   @ApiOperation({ summary: 'Získá stav systému' })
   @ApiResponse({
     status: 200,
-    description: 'Vrací stav serveru, databáze a cache',
-    schema: { example: { server: true, database: true, cache: true } },
+    description: 'Vrací stav serveru, databáze',
+    schema: { example: { server: true, database: true } },
   })
   async checkHealth() {
     const status = await this.healthService.checkHealth();

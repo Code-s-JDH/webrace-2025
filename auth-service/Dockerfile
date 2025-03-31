@@ -1,38 +1,29 @@
-# 1. Fáze: Build
 FROM node:18-alpine AS builder
-
-# Nastavení pracovní složky
 WORKDIR /app
 
-# Kopírujeme package.json a package-lock.json (nebo yarn.lock)
+# Závislosti
 COPY package*.json ./
+RUN npm ci
 
-# Instalace všech závislostí
-RUN npm install
-
-# Kopírujeme celý zdrojový kód do pracovního adresáře
+# Zkopírování zdrojového kódu a sestavení projektu
 COPY . .
-
-# (Volitelně) Vygenerování Prisma klienta
 RUN npx prisma generate
-
-# Build aplikace
 RUN npm run build
 
-# 2. Fáze: Produkční obraz
-FROM node:18-alpine AS runner
-
+# Produkční fáze
+FROM node:18-alpine
 WORKDIR /app
 
-# Kopírujeme jen produkční závislosti
-COPY package*.json ./
-RUN npm ci --only=production
-
-# Kopírujeme build z předchozí fáze
+# Kopírování produkčních závislostí a sestaveného projektu
+COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 
-# Exponujeme port (upravte dle potřeby)
+# Instalace pouze runtime dependencies
+RUN npm ci --omit=dev
+
+# Expozice portu aplikace
 EXPOSE 3000
 
-# Spouštíme aplikaci
-CMD ["node", "dist/main.js"]
+# Spuštění aplikace
+CMD ["node", "dist/src/main.js"]
