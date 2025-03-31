@@ -3,7 +3,9 @@
     "prisma": "^6.5.0"
   },
   "scripts": {
-    "migrate": "npx prisma generate && npx prisma migrate reset --force && npx prisma migrate dev --name init"
+    "migrate": "npx prisma generate && npx prisma migrate deploy"
+
+
   },
   "dependencies": {
     "@prisma/client": "^6.5.0"
