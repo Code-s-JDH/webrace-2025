@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "prisma": "^6.5.0"
+  },
+  "scripts": {
+    "migrate": "npx prisma generate && prisma migrate dev --name init && npx prisma deploy"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.5.0"
+  }
+}
