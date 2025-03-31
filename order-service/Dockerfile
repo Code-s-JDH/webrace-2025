@@ -20,6 +20,6 @@ RUN npm ci --omit=dev
 
 EXPOSE 3200
 
-RUN prisma generate
+RUN npx prisma generate
 
-CMD node dist/src/main.js
+CMD node dist/main.js
