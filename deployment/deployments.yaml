@@ -117,56 +117,56 @@ spec:
                   name: deployment-config
                   key: REDIS_PASSWORD
           command: ["redis-server", "--requirepass", "$(REDIS_PASSWORD)"]
-# ---
-# # Auth-service deployment
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: auth
-# spec:
-#   selector:
-#     matchLabels:
-#       app: auth
-#   template:
-#     metadata:
-#       labels:
-#         app: auth
-#     spec:
-#       nodeSelector:
-#         role: app  # Ensure this matches your node's hostname
-#       containers:
-#         - name: auth
-#           image: registry.digitalocean.com/webrace-docker-registry/auth:latest
-#           resources:
-#             limits:
-#               memory: "512Mi"
-#               cpu: "500m"
-#             requests:
-#               memory: "256Mi"
-#               cpu: "250m"
-#           ports:
-#             - containerPort: 3000
-#           env:
-#             - name: REDIS_PASSWORD
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: REDIS_PASSWORD
-#             - name: RABBITMQ_PASSWORD
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: RABBITMQ_PASSWORD
-#             - name: POSTGRES_PASSWORD
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: POSTGRES_PASSWORD
-#             - name: VAULT_TOKEN
-#               valueFrom:
-#                 configMapKeyRef:
-#                   name: deployment-config
-#                   key: VAULT_TOKEN
+---
+# Auth-service deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+spec:
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      nodeSelector:
+        role: app  # Ensure this matches your node's hostname
+      containers:
+        - name: auth
+          image: registry.digitalocean.com/webrace-docker-registry/auth:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+          ports:
+            - containerPort: 3000
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: REDIS_PASSWORD
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: RABBITMQ_PASSWORD
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: POSTGRES_PASSWORD
+            - name: VAULT_TOKEN
+              valueFrom:
+                configMapKeyRef:
+                  name: deployment-config
+                  key: VAULT_TOKEN
 # ---
 # # Order-service deployment
 # apiVersion: apps/v1
