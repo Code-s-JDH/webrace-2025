@@ -97,8 +97,8 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
-          docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
+      #    docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
+      #    docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
           
       #     docker build -t registry.digitalocean.com/webrace-docker-registry/nofigication:latest ./nofigication-service
       #     docker push registry.digitalocean.com/webrace-docker-registry/nofigication:latest
@@ -113,9 +113,8 @@ jobs:
         run: |
           doctl databases list
 
-          # POSTGRES_URI=$(doctl databases connection get webrace-db --format URI --no-header)
-          # POSTGRES_PASSWORD=$(echo $POSTGRES_URI | grep -oP 'postgres://\K.*?(?=@)')
-          # echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
+          POSTGRES_URI=$(doctl databases connection get webrace-db --format URI --no-header)
+          echo "POSTGRES_PASSWORD=$POSTGRES_URI"
           sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           # sed -i 's|<POSTGRES_PASSWORD>|$POSTGRES_PASSWORD|' $GITHUB_WORKSPACE/deployment/deployments.yaml
