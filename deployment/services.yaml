@@ -38,17 +38,62 @@ spec:
       port: 6379
       targetPort: 6379
 ---
-# Backend Service
+# Auth-service LoadBalancer Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend 
+  name: auth
 spec:
   type: LoadBalancer
   selector:
-    app: backend 
+    app: auth
   ports:
-    - name: backend-port
+    - name: auth-port
       protocol: TCP
-      port: 80      # External port for frontend
-      targetPort: 3100  # Internal frontend service port
+      port: 3000
+      targetPort: 3000
+---
+# Order-service LoadBalancer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: order
+spec:
+  type: LoadBalancer
+  selector:
+    app: order
+  ports:
+    - name: order-port
+      protocol: TCP
+      port: 3200
+      targetPort: 3200
+---
+# Notification-service LoadBalancer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification
+spec:
+  type: LoadBalancer
+  selector:
+    app: notification
+  ports:
+    - name: notification-port
+      protocol: TCP
+      port: 3100
+      targetPort: 3100
+---
+# User-service LoadBalancer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: user
+spec:
+  type: LoadBalancer
+  selector:
+    app: user
+  ports:
+    - name: user-port
+      protocol: TCP
+      port: 3300
+      targetPort: 3300
