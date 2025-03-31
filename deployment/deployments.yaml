@@ -167,39 +167,3 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: VAULT_TOKEN
----
-# Frontend deployment
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: frontend
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: frontend
-  template:
-    metadata:
-      labels:
-        app: frontend
-    spec:
-      nodeSelector:
-        role: app  # Ensure this matches your node's hostname
-      containers:
-      - name: frontend
-        image: registry.digitalocean.com/webrace-docker-registry/frontend:latest
-        resources:
-          limits:
-            memory: "512Mi"
-            cpu: "500m"
-          requests:
-            memory: "256Mi"
-            cpu: "250m"
-        ports:
-        - containerPort: 3000
-        env:
-        - name: VAULT_TOKEN
-          valueFrom:
-            configMapKeyRef:
-              name: deployment-config
-              key: VAULT_TOKEN
