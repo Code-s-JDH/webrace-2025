@@ -14,6 +14,20 @@ services:
       DATABASE_URL: "postgres://postgres:postgres@auth-db:5432/auth"
     volumes:
       - ./auth-service:/app
+  
+  order-service:
+    build: ./auth-service
+    ports:
+      - "3200:3200"
+    depends_on:
+      auth-db:
+        condition: service_healthy
+      rabbitmq:  
+        condition: service_started
+    environment:
+      DATABASE_URL: "postgres://postgres:postgres@auth-db:5432/auth"
+    volumes:
+      - ./order-service:/app
 
   auth-db:
     image: postgres:13-alpine
