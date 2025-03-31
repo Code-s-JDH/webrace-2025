@@ -82,18 +82,3 @@ spec:
       protocol: TCP
       port: 3200
       targetPort: 3200
-# ---
-# # User-service LoadBalancer Service
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: user
-# spec:
-#   type: LoadBalancer
-#   selector:
-#     app: user
-#   ports:
-#     - name: user-port
-#       protocol: TCP
-#       port: 3300
-#       targetPort: 3300
