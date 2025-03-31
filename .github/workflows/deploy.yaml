@@ -97,8 +97,8 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-      #    docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
-      #    docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
+          docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
+          docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
           
       #     docker build -t registry.digitalocean.com/webrace-docker-registry/nofigication:latest ./nofigication-service
       #     docker push registry.digitalocean.com/webrace-docker-registry/nofigication:latest
