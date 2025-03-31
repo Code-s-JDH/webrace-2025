@@ -77,16 +77,6 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DO_TOKEN }}
-          
-      - name: Set up Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.11.3
-          cli_config_credentials_token: ${{ secrets.TERRAFORM_TOKEN }}
-
-      - name: Terraform Setup .auth.tfvars
-        run: |
-          echo "do_token = \"${{ secrets.DO_TOKEN }}\"" > terraform/terraform.auto.tfvars
       
       - name: Save DigitalOcean Kubernetes kubeconfig
         run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 web-race-k8s-cluster
@@ -96,7 +86,6 @@ jobs:
           Nodes=($(kubectl get nodes -o jsonpath='{.items[*].metadata.name}'))
           kubectl label node "${Nodes[0]}" role=services --overwrite
           kubectl label node "${Nodes[1]}" role=app --overwrite
-
 
       - name: Delete all existing resources in the namespace
         run: |
@@ -122,7 +111,8 @@ jobs:
 
       - name: Setup env
         run: |
-          POSTGRES_PASSWORD=$(doctl databases credentials list web-race-db --format=Password --no-header)
+          POSTGRES_URI=$(doctl databases connection get web-race-db --format URI --no-header)
+          POSTGRES_PASSWORD=$(echo $POSTGRES_URI | grep -oP 'postgres://\K.*?(?=@)')
           echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
           sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
