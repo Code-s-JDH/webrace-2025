@@ -27,7 +27,7 @@ spec:
         role: services  # Ensure this matches your node's hostname
       containers:
       - name: vault
-        image: vault:latest
+        image: hashicorp/vault:latest
         resources:
           limits:
             memory: "512Mi"
