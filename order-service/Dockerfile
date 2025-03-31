@@ -20,4 +20,4 @@ RUN npm ci --omit=dev
 
 EXPOSE 3200
 
-CMD ["npm", "run", "start:prod"]
+CMD node dist/main.js
