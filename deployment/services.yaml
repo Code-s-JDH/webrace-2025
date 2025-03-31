@@ -67,21 +67,21 @@ spec:
       protocol: TCP
       port: 3100
       targetPort: 3100
-# ---
-# # Order-service LoadBalancer Service
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: order
-# spec:
-#   type: LoadBalancer
-#   selector:
-#     app: order
-#   ports:
-#     - name: order-port
-#       protocol: TCP
-#       port: 3200
-#       targetPort: 3200
+---
+# Order-service LoadBalancer Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: order
+spec:
+  type: LoadBalancer
+  selector:
+    app: order
+  ports:
+    - name: order-port
+      protocol: TCP
+      port: 3200
+      targetPort: 3200
 # ---
 # # User-service LoadBalancer Service
 # apiVersion: v1
