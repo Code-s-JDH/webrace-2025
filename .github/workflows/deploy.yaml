@@ -106,19 +106,19 @@ jobs:
       - name: Log in to DigitalOcean Container Registry
         run: doctl registry login --expiry-seconds 1200
 
-      - name: Build and push Docker images
-        run: |
-          docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
-          docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
+      # - name: Build and push Docker images
+      #   run: |
+      #     docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
+      #     docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
           
-          docker build -t registry.digitalocean.com/webrace-docker-registry/nofigication:latest ./nofigication-service
-          docker push registry.digitalocean.com/webrace-docker-registry/nofigication:latest
+      #     docker build -t registry.digitalocean.com/webrace-docker-registry/nofigication:latest ./nofigication-service
+      #     docker push registry.digitalocean.com/webrace-docker-registry/nofigication:latest
 
-          docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
-          docker push registry.digitalocean.com/webrace-docker-registry/order:latest
+      #     docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
+      #     docker push registry.digitalocean.com/webrace-docker-registry/order:latest
 
-          docker build -t registry.digitalocean.com/webrace-docker-registry/user:latest ./user-service
-          docker push registry.digitalocean.com/webrace-docker-registry/user:latest
+      #     docker build -t registry.digitalocean.com/webrace-docker-registry/user:latest ./user-service
+      #     docker push registry.digitalocean.com/webrace-docker-registry/user:latest
 
       - name: Setup env
         run: |
