@@ -3,13 +3,13 @@ import * as Joi from 'joi';
 export default () => ({
   type: process.env.NODE_ENV || 'dev',
   server: {
-    port: 4100,
+    port: 3000,
     host: '0.0.0.0',
   },
   services: {
     apiService: {
       host: 'api-service',
-      port: 4000,
+      port: 3000,
     },
     redis: {
       host: 'redis',
