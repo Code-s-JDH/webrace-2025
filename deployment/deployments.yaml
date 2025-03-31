@@ -157,7 +157,7 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: RABBITMQ_PASSWORD
-            - name: POSTGRES_URI
+            - name: DATABASE_URL
               valueFrom:
                 configMapKeyRef:
                   name: deployment-config
@@ -242,7 +242,7 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: RABBITMQ_PASSWORD
-            - name: POSTGRES_URI
+            - name: DATABASE_URL
               valueFrom:
                 configMapKeyRef:
                   name: deployment-config
