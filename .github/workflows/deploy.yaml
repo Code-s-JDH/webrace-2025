@@ -111,12 +111,10 @@ jobs:
 
       - name: Setup env
         run: |
-          POSTGRES_URI=$(doctl databases connection get 58f991b0-2bfc-4e6a-989f-531da486f3bb --format URI --no-header)
-          echo "POSTGRES_URI=$POSTGRES_URI"
-
+          echo "POSTGRES_URI: ${{ secrets.POSTGRES_URI }}"
           sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
-          # sed -i 's|<POSTGRES_URI>|$POSTGRES_URI|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          # sed -i 's|<POSTGRES_URI>|"${{ secrets.POSTGRES_URI }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<VAULT_TOKEN>|"${{ secrets.VAULT_TOKEN }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
 
       - name: Deploy to DigitalOcean Kubernetes
