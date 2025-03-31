@@ -3,7 +3,6 @@ import { ConfigModule } from '@nestjs/config';
 import configuration, { configValidationSchema } from './bootstrap/config';
 import { AuthModule } from '@/modules/auth/auth.module';
 import { PrismaModule } from '@/common/infrastructure/prisma/prisma.module';
-// import { RedisModule } from '@/common/infrastructure/redis/redis.module';
 import { HealthModule } from './modules/health/health.module';
 import { RabbitMQModule } from './common/infrastructure/rabbitmq/rabbitmq.module';
 
@@ -18,7 +17,6 @@ import { RabbitMQModule } from './common/infrastructure/rabbitmq/rabbitmq.module
     AuthModule,
     HealthModule,
     PrismaModule,
-    RedisModule,
     RabbitMQModule
   ],
 })
