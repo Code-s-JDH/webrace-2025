@@ -1,11 +1,14 @@
 {
   "devDependencies": {
+    "@types/node": "^22.13.14",
     "prisma": "^6.5.0"
   },
   "scripts": {
-    "migrate": "npx prisma generate && prisma migrate dev --name init && npx prisma deploy"
+    "migrate": "npx prisma generate && prisma migrate dev --name init && npx prisma deploy && npx prisma db seed"
   },
   "dependencies": {
-    "@prisma/client": "^6.5.0"
+    "@prisma/client": "^6.5.0",
+    "bcryptjs": "^3.0.2",
+    "uuid": "^11.1.0"
   }
 }
