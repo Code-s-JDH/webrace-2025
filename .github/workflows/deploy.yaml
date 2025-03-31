@@ -108,18 +108,17 @@ jobs:
 
       - name: Build and push Docker images
         run: |
-          docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth
+          docker build -t registry.digitalocean.com/webrace-docker-registry/auth:latest ./auth-service
           docker push registry.digitalocean.com/webrace-docker-registry/auth:latest
           
-          docker build -t registry.digitalocean.com/webrace-docker-registry/nofigication:latest ./nofigication
+          docker build -t registry.digitalocean.com/webrace-docker-registry/nofigication:latest ./nofigication-service
           docker push registry.digitalocean.com/webrace-docker-registry/nofigication:latest
 
-          docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order
+          docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
           docker push registry.digitalocean.com/webrace-docker-registry/order:latest
 
-          docker build -t registry.digitalocean.com/webrace-docker-registry/user:latest ./user
+          docker build -t registry.digitalocean.com/webrace-docker-registry/user:latest ./user-service
           docker push registry.digitalocean.com/webrace-docker-registry/user:latest
-
 
       - name: Setup env
         run: |
