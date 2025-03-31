@@ -55,4 +55,5 @@ export class AuthService implements OnModuleInit {
     }
     throw new UnauthorizedException('Neplatné přihlašovací údaje');
   }
+
 }
