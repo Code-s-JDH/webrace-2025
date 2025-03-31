@@ -123,6 +123,7 @@ jobs:
       - name: Setup env
         run: |
           POSTGRES_PASSWORD=$(terraform output -raw db_user_password)
+          echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD" 
           sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<POSTGRES_PASSWORD>|$POSTGRES_PASSWORD|' $GITHUB_WORKSPACE/deployment/deployments.yaml
