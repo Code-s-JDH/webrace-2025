@@ -5,7 +5,7 @@ metadata:
 data:
     REDIS_PASSWORD: <REDIS_PASSWORD>
     RABBITMQ_PASSWORD: <RABBITMQ_PASSWORD>
-    POSTGRES_PASSWORD: <POSTGRES_PASSWORD>
+    POSTGRES_URI: <POSTGRES_URI>
     VAULT_TOKEN: <VAULT_TOKEN>
 ---
 # Vault deployment
@@ -157,11 +157,11 @@ spec:
                 configMapKeyRef:
                   name: deployment-config
                   key: RABBITMQ_PASSWORD
-            - name: POSTGRES_PASSWORD
+            - name: POSTGRES_URI
               valueFrom:
                 configMapKeyRef:
                   name: deployment-config
-                  key: POSTGRES_PASSWORD
+                  key: POSTGRES_URI
             - name: VAULT_TOKEN
               valueFrom:
                 configMapKeyRef:
@@ -207,11 +207,11 @@ spec:
 #                 configMapKeyRef:
 #                   name: deployment-config
 #                   key: RABBITMQ_PASSWORD
-#             - name: POSTGRES_PASSWORD
+#             - name: POSTGRES_URI
 #               valueFrom:
 #                 configMapKeyRef:
 #                   name: deployment-config
-#                   key: POSTGRES_PASSWORD
+#                   key: POSTGRES_URI
 #             - name: VAULT_TOKEN
 #               valueFrom:
 #                 configMapKeyRef:
@@ -257,11 +257,11 @@ spec:
 #                 configMapKeyRef:
 #                   name: deployment-config
 #                   key: RABBITMQ_PASSWORD
-#             - name: POSTGRES_PASSWORD
+#             - name: POSTGRES_URI
 #               valueFrom:
 #                 configMapKeyRef:
 #                   name: deployment-config
-#                   key: POSTGRES_PASSWORD
+#                   key: POSTGRES_URI
 #             - name: VAULT_TOKEN
 #               valueFrom:
 #                 configMapKeyRef:
@@ -307,11 +307,11 @@ spec:
 #                 configMapKeyRef:
 #                   name: deployment-config
 #                   key: RABBITMQ_PASSWORD
-#             - name: POSTGRES_PASSWORD
+#             - name: POSTGRES_URI
 #               valueFrom:
 #                 configMapKeyRef:
 #                   name: deployment-config
-#                   key: POSTGRES_PASSWORD
+#                   key: POSTGRES_URI
 #             - name: VAULT_TOKEN
 #               valueFrom:
 #                 configMapKeyRef:
