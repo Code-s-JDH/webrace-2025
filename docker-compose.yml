@@ -1,3 +1,5 @@
+version: "3.8"
+
 services:
   auth-service:
     build: ./auth-service
@@ -6,9 +8,7 @@ services:
     depends_on:
       auth-db:
         condition: service_healthy
-      rabbitmq:
-        condition: service_started
-      redis:
+      rabbitmq:  
         condition: service_started
     environment:
       DATABASE_URL: "postgres://postgres:postgres@auth-db:5432/auth"
@@ -41,12 +41,6 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
-
-  redis:
-    image: redis:alpine
-    restart: always
-    ports:
-      - "6379:6379"
 
 volumes:
   auth-db-data:
