@@ -120,7 +120,6 @@ jobs:
           docker build -t registry.digitalocean.com/webrace-docker-registry/user:latest ./user-service
           docker push registry.digitalocean.com/webrace-docker-registry/user:latest
 
-
       - name: Setup env
         run: |
           POSTGRES_PASSWORD=$(terraform output -raw db_user_password)
