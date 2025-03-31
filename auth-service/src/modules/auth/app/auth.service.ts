@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException, Inject } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, Inject, OnModuleInit } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { User } from '../domain/user.entity';
@@ -7,12 +7,24 @@ import { LoginDto } from './dtos/login.dto';
 import { RegisterDto } from './dtos/register.dto';
 
 @Injectable()
-export class AuthService {
+export class AuthService implements OnModuleInit {
   constructor(
     @Inject('IAuthRepository')
     private readonly authRepository: IAuthRepository,
     private readonly jwtService: JwtService,
   ) {}
+
+  async onModuleInit() {
+    const testEmail = 'test@test.test';
+    const testPassword = 'test';
+
+    const existingUser = await this.authRepository.findByEmail(testEmail);
+    if (!existingUser) {
+      const hashedPassword = await bcrypt.hash(testPassword, 10);
+      await this.authRepository.createUser({ email: testEmail, password: hashedPassword });
+      console.log(`✅ Testovací uživatel vytvořen: ${testEmail}`);
+    }
+  }
 
   async login(loginDto: LoginDto): Promise<{ accessToken: string }> {
     const user = await this.validateUser(loginDto.email, loginDto.password);
@@ -38,7 +50,7 @@ export class AuthService {
 
   async validateUser(email: string, password: string): Promise<User> {
     const user = await this.authRepository.findByEmail(email);
-    if (user && await bcrypt.compare(password, user.password)) {
+    if (user && (await bcrypt.compare(password, user.password))) {
       return user;
     }
     throw new UnauthorizedException('Neplatné přihlašovací údaje');

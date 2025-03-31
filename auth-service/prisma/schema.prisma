@@ -21,3 +21,16 @@ model User {
 
   @@map("users")
 }
+
+// model Order {
+//   id
+//   title
+//   description
+//   status
+//   user_id
+//   estimated_time
+//   courier_id
+//   adress
+//   postal
+//   gps
+// }
