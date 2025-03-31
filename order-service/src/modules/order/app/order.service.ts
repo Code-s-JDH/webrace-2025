@@ -2,18 +2,17 @@ import { Injectable, Inject } from '@nestjs/common';
 import { IOrderRepository } from '../domain/order.repository';
 import { CreateOrderDto } from './dtos/create-order.dto';
 import { Order } from '../domain/order.entity';
-import { UuidGenerator } from '@/common/infrastructure/service/uuid-generator.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class OrderService {
   constructor(
     @Inject('IOrderRepository') private readonly orderRepo: IOrderRepository,
-    @Inject(UuidGenerator) private readonly uuidGenerator: UuidGenerator,
   ) {}
 
   async create(dto: CreateOrderDto): Promise<Order> {
     const order = new Order(
-      this.uuidGenerator.generate(),
+      uuidv4(),
       dto.title,
       dto.description,
       dto.status,
