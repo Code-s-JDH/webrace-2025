@@ -20,4 +20,4 @@ RUN npm ci --omit=dev
 
 EXPOSE 3000
 
-CMD npx prisma migrate deploy && node dist/src/main.js
+CMD node dist/src/main.js
