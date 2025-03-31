@@ -16,8 +16,8 @@ COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
 COPY --from=builder /app/prisma ./prisma
 
-RUN npm ci --omit=dev
+RUN npm ci
 
-EXPOSE 3000
+EXPOSE 3200
 
-CMD npx prisma migrate deploy && node dist/src/main.js
+CMD node dist/src/main.js

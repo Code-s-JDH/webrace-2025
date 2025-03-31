@@ -18,7 +18,7 @@ export class OrderService {
       dto.description,
       dto.status,
       dto.userId,
-      dto.estimatedTime ? new Date(dto.estimatedTime) : undefined,
+      dto.estimatedTime,
       dto.courierId,
       dto.address,
       dto.postal,

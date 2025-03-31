@@ -5,7 +5,7 @@ export class Order {
     public description: string,
     public status: string,
     public userId: string,
-    public estimatedTime?: Date,
+    public estimatedTime?: string,
     public courierId?: string,
     public address?: string,
     public postal?: string,

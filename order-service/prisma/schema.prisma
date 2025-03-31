@@ -28,11 +28,13 @@ model Order {
   description   String
   status        String
   userId        String
-  estimatedTime DateTime?
+  estimatedTime String?
   courierId     String?
   address       String?
   postal        String?
   gps           String?
   weight        Float?
   size          String?
+
+  @@map("orders")
 }

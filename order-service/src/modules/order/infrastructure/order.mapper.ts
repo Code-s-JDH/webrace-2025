@@ -1,5 +1,3 @@
-// src/modules/order/infrastructure/order.mapper.ts
-
 import { Order } from '../domain/order.entity';
 import { Order as PrismaOrder } from '@prisma/client';
 
