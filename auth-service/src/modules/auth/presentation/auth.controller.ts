@@ -5,7 +5,7 @@ import { RegisterDto } from '../app/dtos/register.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 @ApiTags('auth')
-@Controller({ version: '1', path: 'auth' })
+@Controller({ version: '2', path: 'auth' })
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -18,6 +18,7 @@ export class AuthController {
   })
   @ApiResponse({ status: 401, description: 'Neplatné přihlašovací údaje' })
   async login(@Body() loginDto: LoginDto): Promise<{ accessToken: string }> {
+    console.log('📥 Login request:', loginDto);
     return this.authService.login(loginDto);
   }
 

@@ -103,8 +103,8 @@ jobs:
           docker build -t registry.digitalocean.com/webrace-docker-registry/notification:latest ./notification-service
           docker push registry.digitalocean.com/webrace-docker-registry/notification:latest
 
-      #     docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
-      #     docker push registry.digitalocean.com/webrace-docker-registry/order:latest
+          # docker build -t registry.digitalocean.com/webrace-docker-registry/order:latest ./order-service
+          # docker push registry.digitalocean.com/webrace-docker-registry/order:latest
 
       #     docker build -t registry.digitalocean.com/webrace-docker-registry/user:latest ./user-service
       #     docker push registry.digitalocean.com/webrace-docker-registry/user:latest
@@ -114,8 +114,14 @@ jobs:
           echo "POSTGRES_URI: ${{ secrets.POSTGRES_URI }}"
           sed -i 's|<REDIS_PASSWORD>|"${{ secrets.REDIS_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<RABBITMQ_PASSWORD>|"${{ secrets.RABBITMQ_PASSWORD }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
-          # sed -i 's|<POSTGRES_URI>|"${{ secrets.POSTGRES_URI }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          sed -i 's|<POSTGRES_URI>|"${{ secrets.POSTGRES_URI }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<VAULT_TOKEN>|"${{ secrets.VAULT_TOKEN }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
+          
+      - name: Migrate
+        run: |
+            npm install
+            npm run migrate
+        working-directory: migrations
 
       - name: Deploy to DigitalOcean Kubernetes
         run: |
