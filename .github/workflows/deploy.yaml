@@ -115,10 +115,10 @@ jobs:
           sed -i 's|<VAULT_TOKEN>|"${{ secrets.VAULT_TOKEN }}"|' $GITHUB_WORKSPACE/deployment/deployments.yaml
           sed -i 's|<DATABASE_URL>|"${{ secrets.POSTGRES_URI }}"|' $GITHUB_WORKSPACE/migrations/.env
 
-      - name: Migrate
-        run: |
-            npm install
-            npm run migrate
+      # - name: Migrate
+      #   run: |
+      #       npm install
+      #       npm run migrate
         working-directory: migrations
 
       - name: Deploy to DigitalOcean Kubernetes
